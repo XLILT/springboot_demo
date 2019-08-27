@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xl.www.dao.IMDao">
+    <resultMap id="BaseResultMap" type="com.xl.www.model.IM">
+        <result column="live_id" property="live_id" />
+        <result column="user_id" property="user_id" />
+        <result column="user_name" property="user_name" />
+        <result column="message_content" property="message_content" />
+        <result column="create_ts" property="create_ts" />
+        <result column="terminal_type" property="terminal_type" />
+    </resultMap>
+
+    <select id="getMessageWithStuck" resultMap="BaseResultMap">
+        select
+        record_id,live_id,user_id,user_name,message_content,create_ts,terminal_type
+        from t_live_messages_0
+        limit 10
+    </select>
+</mapper>
