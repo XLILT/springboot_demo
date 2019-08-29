@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xl.www.dao.im.ImDao">
+    <select id="getMessageWithStuck" resultType="com.xl.www.model.Im" parameterType="java.lang.String" statementType="STATEMENT">
+        select
+        live_id,sender_id,user_name,message_content,create_ts,terminal_type
+        from ${tableName}
+        where message_content like '%卡%'
+    </select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xl.www.dao.imstuck.ImStuckDao">
+    <insert id="insertMessages" parameterType="java.util.List">
+        insert into
+            t_live_messages(live_id,sender_id,user_name,message_content,create_ts,terminal_type)
+        values
+            <foreach collection="list" item="item" index="index" separator=",">
+                (
+                    #{item.live_id},
+                    #{item.sender_id},
+                    #{item.user_name},
+                    #{item.message_content},
+                    #{item.create_ts},
+                    #{item.terminal_type}
+                )
+            </foreach>
+    </insert>
+</mapper>
