@@ -19,3 +19,8 @@ target/
 **/.idea
 
 **/.gradle
+
+#Config file
+addTinyPic/src/**/application.properties
+addTinyPic/img
+

@@ -21,8 +21,9 @@ public class SFSService {
     @Autowired
     private SFSConf sfsConf;
 
-    static String version = "1.0";
-    static String token = null;
+    private static String version = "1.0";
+    private static String token = null;
+    private static long last_token_ts = 0;
 
     private String fname = null;
 
@@ -60,12 +61,15 @@ public class SFSService {
             return null;
         }
 
-        return tokenJson.getJSONObject("data").getString("accessToken");
+        token = tokenJson.getJSONObject("data").getString("accessToken");
+        last_token_ts = System.currentTimeMillis();
+
+        return token;
     }
 
     public int downloadImage(String key, String fname) {
-        if (token == null) {
-            token = getToken();
+        if (token == null || last_token_ts < System.currentTimeMillis() - 3500000L) {
+            getToken();
         }
 
         if (token == null) {
@@ -143,8 +147,8 @@ public class SFSService {
     }
 
     public int uploadImage(String key, String fname, Img img) {
-        if (token == null) {
-            token = getToken();
+        if (token == null || last_token_ts < System.currentTimeMillis() - 3500000L) {
+            getToken();
         }
 
         if (token == null) {

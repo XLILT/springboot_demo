@@ -18,4 +18,7 @@ public interface PicMapper {
 
     @Insert("INSERT INTO sunlive.roomimg(PrimaryKey,RoomId,DocId,PageId,IsComplete,IsThumbnail) VALUES(#{PrimaryKey},#{RoomId},#{DocId},#{PageId},#{IsComplete},#{IsThumbnail})")
     public int putRoomImage(RoomImg roomImg);
+
+    @Select("select * from sunlive.img where ImgHash=#{hashCode}")
+    public Img getImageByHash(String hashCode);
 }

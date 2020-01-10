@@ -64,32 +64,37 @@ public class AddTinyPicController {
             return -1;
         }
 
-        Img jpgImg = new Img();
+        Img jpgImg = picMetaService.getImageByHash(jpgHash);
 
-        jpgImg.setImgUrl(jpgKey);
-        jpgImg.setImgType(3L);
-        jpgImg.setImgWidth(img.getImgWidth());
-        jpgImg.setImgHeight(img.getImgHeight());
-        jpgImg.setImgHash(jpgHash);
-        jpgImg.setSource(1L);
+        if(jpgImg == null) {
+            jpgImg = new Img();
 
-        ret = sfsService.uploadImage(jpgKey, jpgKey, jpgImg);
-        if(ret != 0) {
-            return ret;
+            jpgImg.setImgUrl(jpgKey);
+            jpgImg.setImgType(3L);
+            jpgImg.setImgWidth(img.getImgWidth());
+            jpgImg.setImgHeight(img.getImgHeight());
+            jpgImg.setImgHash(jpgHash);
+            jpgImg.setSource(1L);
+
+            ret = sfsService.uploadImage(jpgKey, jpgKey, jpgImg);
+
+            if(ret != 0) {
+                return ret;
+            }
+
+            log.info("upload jpg {} succ", jpgKey);
+
+            log.info("{}", jpgImg);
+
+            ret = picMetaService.putImage(jpgImg);
+
+            if(ret != 1) {
+                log.error("put img failed {}", jpgImg);
+                return -1;
+            }
+
+            log.info("put jpg img succ {}", jpgImg);
         }
-
-        log.info("upload jpg {} succ", jpgKey);
-
-        log.info("{}", jpgImg);
-
-        ret = picMetaService.putImage(jpgImg);
-
-        if(ret != 1) {
-            log.error("put img failed {}", jpgImg);
-            return -1;
-        }
-
-        log.info("put jpg img succ {}", jpgImg);
 
         RoomImg jpgRoomImg = new RoomImg();
         jpgRoomImg.setPrimaryKey(jpgImg.getId());
@@ -127,32 +132,36 @@ public class AddTinyPicController {
             return -1;
         }
 
-        Img tinyImg = new Img();
+        Img tinyImg = picMetaService.getImageByHash(tinyHash);
 
-        tinyImg.setImgUrl(tinyKey);
-        tinyImg.setImgType(1L);
-        tinyImg.setImgWidth(640L);
-        tinyImg.setImgHeight(480L);
-        tinyImg.setImgHash(tinyHash);
-        tinyImg.setSource(1L);
+        if (tinyImg == null) {
+            tinyImg = new Img();
 
-        ret = sfsService.uploadImage(tinyKey, tinyKey, tinyImg);
-        if(ret != 0) {
-            return ret;
+            tinyImg.setImgUrl(tinyKey);
+            tinyImg.setImgType(1L);
+            tinyImg.setImgWidth(640L);
+            tinyImg.setImgHeight(480L);
+            tinyImg.setImgHash(tinyHash);
+            tinyImg.setSource(1L);
+
+            ret = sfsService.uploadImage(tinyKey, tinyKey, tinyImg);
+            if(ret != 0) {
+                return ret;
+            }
+
+            log.info("upload tiny {} succ", tinyKey);
+
+            log.info("{}", tinyImg);
+
+            ret = picMetaService.putImage(tinyImg);
+
+            if(ret != 1) {
+                log.error("put img failed {}", tinyImg);
+                return -1;
+            }
+
+            log.info("put tiny img succ {}", tinyImg);
         }
-
-        log.info("upload tiny {} succ", tinyKey);
-
-        log.info("{}", tinyImg);
-
-        ret = picMetaService.putImage(tinyImg);
-
-        if(ret != 1) {
-            log.error("put img failed {}", tinyImg);
-            return -1;
-        }
-
-        log.info("put tiny img succ {}", tinyImg);
 
         RoomImg tinyRoomImg = new RoomImg();
         tinyRoomImg.setPrimaryKey(tinyImg.getId());
@@ -174,6 +183,20 @@ public class AddTinyPicController {
         log.info("put tiny roomimg succ {}", tinyRoomImg);
 
         log.info("key {} deal over", key);
+
+        return 0;
+    }
+
+    @GetMapping("/download")
+    public int addTiny(@RequestParam String key) {
+        String rowFileName = SFSKeyGenerator.getFileNameFromKey(key);
+
+        int ret = sfsService.downloadImage(key, rowFileName);
+        if(ret != 0) {
+            return ret;
+        }
+
+        log.info("download {} as {}", key, rowFileName);
 
         return 0;
     }

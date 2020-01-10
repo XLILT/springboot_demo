@@ -32,4 +32,8 @@ public class PicMetaService {
         return picMapper.putRoomImage(roomImg);
     }
 
+    public Img getImageByHash(String hashCode) {
+        return picMapper.getImageByHash(hashCode);
+    }
+
 }
