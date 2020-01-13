@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="TestTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.16.116.50:3309/mbg_test?useUnicode=true;characterEncoding=utf-8;serverTimezone=Asia/Shanghai"
+                        userId="root"
+                        password="passwd">
+            <!--解决mysql驱动升级到8.0后不生成指定数据库代码的问题-->
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.xl.mbgdemo1.model" targetProject="src\main\java">
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mgb_test"  targetProject="src\main\resources">
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.xl.mbgdemo1.dao"  targetProject="src\main\java">
+        </javaClientGenerator>
+
+        <table tableName="%">
+            <generatedKey column="a" sqlStatement="MySql" identity="true" />
+        </table>
+    </context>
+</generatorConfiguration>
